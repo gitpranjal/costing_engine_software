@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Pure CSS3 Login Form</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='login.css')}}">
+
+  <style type="text/css">
+
+    /* TODO: jugaad for width */
+      #locator { position: relative; visibility: inline; left: 47%; top: 30%; z-index: 200; width:1px;}
+    #search_box { position: relative; visibility: inline; left: 5%; top: 35%; z-index: 200; }
+    
+    html, body {
+      height: 100%;
+    }
+        body {
+          background-image: url("{{url_for('static', filename='2_blur.jpg')}}");
+          background-repeat:no-repeat;
+    
+          background-size:cover;
+        }
+
+        img {
+          padding-top:10px
+        }
+      </style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+
+<div class="bg-image"></div>
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+           <!-- Tabs Titles -->
+           <h2 style="color:black"> Create accunt!</h2>
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="{{url_for('static', filename='bk_final_logo.png')}}" id="icon" alt="User Icon" />
+    </div>
+
+    <!-- Login Form -->
+    <form action='/' method='POST'>
+      <p>{{error_message}}</p>
+      <input type="text" id="login" class="fadeIn second" name="email" placeholder="login">
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    </form>
+
+
+
+  </div>
+</div>
+<!-- partial -->
+  
+</body>
+</html>

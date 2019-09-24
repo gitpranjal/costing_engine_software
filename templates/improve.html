@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Garment Costing</title>
+	<style type="text/css">
+		table, th, td {
+		  border: 1px solid black;
+		   border-collapse: collapse;
+		}
+
+		th, td {
+		  padding: 10px;
+		  text-align:center;
+		}
+	</style>
+
+<script src="test.js"></script>
+</head>
+<body>
+	<h3>{{garment_text_description}}</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td id="garment" contenteditable="true"    >{{result["description"]}}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div >
+	<hr />
+	</div>
+	<h4 id="total_cost">Total Amount: {{result["Total cost"]}}</h4>
+	{% for type, value in result.items() if type!="Total cost" and type!="description"%}
+	<div class="category" id="category">
+		<h4> <span class="categoryName">{{type}}</span>: <span class="categoryAmount"> {{value["total_cost"]}}</span></h4>
+<!--		<br/>-->
+		<table>
+			<thead>
+				<tr>
+					<th>name</th>
+					<th>avg</th>
+					<th>rate</th>
+					<th>amount</th>
+				</tr>
+			</thead>
+			<tbody id="tableBody">
+				{% for item in value["items"] %}
+				<tr>
+					<td contenteditable="true" >{{item["name"]}}</td>
+					<td contenteditable="true" >{{item["avg"]}}</td>
+					<td contenteditable="true" >{{item["rate"]}}</td>
+					<td contenteditable="true" >{{item["amount"]}}</td>
+					<td><input type="button" value="Delete" onclick="deleteRow(this)"/></td>
+				</tr>
+				{% endfor %}
+			</tbody>	
+		</table>
+<!--		<p>Total Amount {{value["total_cost"]}}</p>-->
+<button id="addButton" onclick="addRowVanilla(this)">Add Row </button>	
+</div>
+	{% endfor %}
+    <button type="button"  onclick="GenerateTable()" >Generate Table</button>
+    <div id="dvTable"></div>
+	<button id="addButton" onclick="exportData()">Export </button>	
+</body>
+</html>

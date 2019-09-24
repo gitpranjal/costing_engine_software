@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel='shortcut icon' href='/favicon.ico' type='image/png'/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Garment Costing</title>
+    <style type="text/css">
+		/* table, th, td {
+		  border: 1px solid black;
+		   border-collapse: collapse;
+		}
+
+		th, td {
+		  padding: 10px;
+		  text-align:center;
+		} */
+        
+        td, th    {
+                text-align: center; 
+                vertical-align: middle;
+            } 
+        .fa-trash-alt {
+            font-size: 1.5rem;
+        }
+        .fa-trash-alt:hover {
+            color:crimson;
+        }
+
+        #total {
+            text-align: right;
+        }
+
+        .card{
+            border:none;
+        }
+
+        .container{
+            padding-top:20px;
+            text-align: center;
+        }
+
+        .card-header{
+            background-color:#e9ecef;
+        }
+	body{
+		padding-bottom:20px;
+	}
+	</style>
+    <script src="https://kit.fontawesome.com/8ff7dbce98.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="{{url_for('static', filename='test2.js')}}"></script> 
+
+    
+</head>
+<body>
+
+
+	      <!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Feedback</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+             Confirm submission?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-success" onclick="exportData()">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+     <div class="container">
+        <div class="row" style="padding-bottom: 20px">
+        <h3 class="col-sm-6">{{string_query}}</h3>
+        <h4 class="col-sm-6">Total Amount: <span id="totalProductAmount">{{amount}}</span></h4>
+        </div>
+
+        <div class="container">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Garment</th>
+                    <th>Buyer</th>
+                    <th>Season</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="garment" contenteditable="true">{{dict["Description"]}}</td>
+                    <td id="buyer" contenteditable="true">{{dict["Buyer"]}}</td>
+                    <td id="season" contenteditable="true">{{dict["Season"]}}</td>
+                    <td id="description" contenteditable="true">{{dict["Fabric"]}}</td>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>  
+
+	<div >
+	<hr />
+	</div>
+	
+	{% for type, value in result.items() %}
+		<div class="category">
+            <div class="container mt-5 ">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-center"> <span class="categoryName">{{type}}</span>
+                            <!-- : <span class="categoryAmount"> 187.55</span> -->
+                        </h4>
+                    </div>    
+                    <!--		<br/>-->
+                    <div >
+                        <table class="table">
+                            <thead >
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Avg</th>
+                                    <th>Rate</th>
+                                    <th>Amount</th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="amountTable">
+                            	{% for item in value["items"] %}
+	                                <tr>
+	                                    <td contenteditable="true">{{item["name"]}}</td>
+	                                    <td contenteditable="true" id="average" class = "amountInfluencer">{{item["avg"]}}</td>
+	                                    <td contenteditable="true" class="amountInfluencer">{{item["rate"]}}</td>
+	                                    <td  class="itemAmount">{{item["amount"]}}</td>
+	                                    <!-- <td><input type="button" value="Delete" onclick="deleteRow(this)" /></td> -->
+	                                    <td> <i class="far fa-trash-alt" onclick="deleteRow(this)"></i></td>
+	                                    
+	                                </tr>
+	                            {% endfor %}    
+
+                            </tbody>
+                            <tfoot>
+                                <th id = "total" colspan="3">Total Amount :</th>
+                                <th class="categoryAmount" >{{value["total_amount"]}}</th>
+                                <td> <button id="addButton" onclick="addRowVanilla(this)" class="btn btn-primary">Add Row </button></td>
+                            </tfoot>
+                        </table>
+                        <!--		<p>Total Amount 187.55</p>-->
+                        <!-- <button id="addButton" onclick="addRowVanilla(this)" class="btn btn-primary">Add Row </button> -->
+                    </div>
+                </div>    
+            </div>
+        </div>
+    {% endfor %}    
+
+	<!-- Button trigger modal -->
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModalCenter">
+                   Export
+            </button>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    
+</body>
+</html>

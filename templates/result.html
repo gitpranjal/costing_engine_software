@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel='shortcut icon' href='/favicon.ico' type='image/png'/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Garment Costing</title>
+    <style type="text/css">
+		/* table, th, td {
+		  border: 1px solid black;
+		   border-collapse: collapse;
+		}
+
+		th, td {
+		  padding: 10px;
+		  text-align:center;
+		} */
+        
+        td, th    {
+                text-align: center; 
+                vertical-align: middle;
+            } 
+        .fa-trash-alt {
+            font-size: 1.5rem;
+        }
+        .fa-trash-alt:hover {
+            color:crimson;
+        }
+
+        #total {
+            text-align: right;
+        }
+
+        .card{
+            border:none;
+        }
+
+        .container{
+            padding-top:20px;
+            text-align: center;
+        }
+
+        .card-header{
+            background-color:#e9ecef;
+        }
+	body{
+		padding-bottom:20px;
+	}
+	</style>
+    <script src="https://kit.fontawesome.com/8ff7dbce98.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+</head>
+<body>
+
+	
+	<div>
+	<hr />
+	<div class="container">
+        <div class="row" style="padding-bottom: 20px">
+        <h3 class="col-sm-6">{{garment_text_description}}</h3>
+        <h4 class="col-sm-6">Total Amount: <span id="totalProductAmount">{{result["Total cost"]}}</span></h4>
+        </div>
+
+        <div class="container">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Description</th>
+                    <th>Buyer</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="description" contenteditable="true">{{result["description"].upper()}}</td>
+                    <td id="description" contenteditable="true">{{result["buyer"].upper()}}</td>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>  
+
+	<div >
+	<hr />
+	</div>
+	
+	{% for type, value in result.items() if type!="Total cost" and type!="description" and type!="buyer" and type!="user"%}
+		<div class="category">
+            <div class="container mt-5 ">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-center"> <span class="categoryName">{{type.upper()}}</span>
+                            <!-- : <span class="categoryAmount">{{value["total_cost"]}}</span> -->
+                        </h4>
+                    </div>    
+                    <!--		<br/>-->
+                    <div >
+                        <table class="table">
+                            <thead >
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Avg</th>
+                                    <th>Rate</th>
+                                    <th>Amount</th>
+                                    <th>UOM</th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="amountTable">
+                            	{% for item in value["items"] %}
+	                                <tr>
+	                                    <td contenteditable="true">{{item["name"]}}</td>
+	                                    <td contenteditable="true" id="average" class = "amountInfluencer">{{item["avg"]}}</td>
+	                                    <td contenteditable="true" class="amountInfluencer">{{item["rate"]}}</td>
+	                                    <td  class="itemAmount">{{item["amount"]}}</td>
+                                        <td  class="uom">{{item["uom"]}}</td>
+	                                    
+	                                </tr>
+	                            {% endfor %}    
+
+                            </tbody>
+                            <tfoot>
+                                <th id = "total" colspan="3">Total Amount :</th>
+                                <th class="categoryAmount" >{{value["total_cost"]}}</th>
+                                
+                            </tfoot>
+                        </table>
+        
+                        
+                    </div>
+                </div>    
+            </div>
+        </div>
+    {% endfor %}    
+<!--		<br/>-->
+	<form action="{{'/success/improve/' + result['description']}}">
+  		<button type="submit" class="btn btn-dark">Improve</button>
+  		<br>
+  	</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

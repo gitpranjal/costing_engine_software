@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Garment Costing</title>
+	<style type="text/css">
+		table, th, td {
+		  border: 1px solid black;
+		   border-collapse: collapse;
+		}
+
+		th, td {
+		  padding: 10px;
+		  text-align:center;
+		}
+	</style>
+</head>
+<body>
+	<h3>{{garment_text_description}}</h3>
+	<table>
+		<tr>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td>{{result["description"]}}</td>
+		</tr>
+	</table>
+	<div>
+	<hr />
+	</div>
+	<h4>Total Amount: {{result["Total cost"]}}</h4>
+	{% for type, value in result.items() if type!="Total cost" and type!="description"%}
+		<h4>{{type}}: {{value["total_cost"]}}</h4>
+<!--		<br/>-->
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Avg</th>
+				<th>Rate</th>
+				<th>Amount</th>
+			</tr>
+			{% for item in value["items"] %}
+			<tr>
+				<td>{{item["name"]}}</td>
+				<td>{{item["avg"]}}</td>
+				<td>{{item["rate"]}}</td>
+				<td>{{item["amount"]}}</td>
+			</tr>
+			{% endfor %}
+		</table>
+<!--		<p>Total Amount {{value["total_amount"]}}</p>-->
+		{% endfor %}
+<!--		<br/>-->
+	<form action={{"/success/improve/" + result["description"]}}>
+  		<button>Improve</button>
+  		<br>
+  	</form>
+</body>
+</html>
